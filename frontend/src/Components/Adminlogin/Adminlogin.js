@@ -8,7 +8,7 @@ function Adminlogin() {
     const handleSubmit =async (e)=>{
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:5000/api/auth/login", {
+            const response = await fetch("http://localhost:5001/api/auth/login", {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                   "Content-Type": "application/json",
@@ -17,14 +17,15 @@ function Adminlogin() {
               });
               const json = await response.json()
               console.log(json,response.status)
-              // if (response.status===200) {
-              //   localStorage.setItem("token", json.authtoken)
-              //   console.log(localStorage.getItem)
-              //   navigate('/home')
-              // }
-              // else {
-              //   alert("invalid cerdential")
-              // }
+              if (response.status===200) {
+                localStorage.setItem("token", response.json)
+                console.log(localStorage.getItem("token"))
+                // navigate('/home')
+              }
+              else {
+                alert("invalid cerdential")
+                
+              }
             
         } catch (error) {
             console.log(error)
