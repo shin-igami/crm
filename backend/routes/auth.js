@@ -10,17 +10,18 @@ const jwt = require('jsonwebtoken')
 const auth = require('../middleware/auth')
 
 router.post('/register',async(req,res)=>{
-    const {Name,UserName,Password} = req.body
+    const {Name,Number,Password} = req.body
+    console.log(req.body)
     try {
         let user = await User
-        .findOne({UserName})
+        .findOne({Number})
         if(user){
             return res.status(400).json({error:"User already exists"})
         }
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(Password,salt)
         user = new User({
-            Name,UserName,Password:hash
+            Name,Number,Password:hash
         })
         await user.save()
         res.status(201).json({user})
@@ -31,10 +32,10 @@ router.post('/register',async(req,res)=>{
 )
 
 router.post('/login',async(req,res)=>{
-    const {UserName,Password} = req.body
+    const {Number,Password} = req.body
     console.log(req.body)
     try {
-        let user = await User.findOne({UserName})
+        let user = await User.findOne({Number})
         if(!user){
             return res.status(400).json({error:"Invalid Credentials"})
         }
