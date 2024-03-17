@@ -18,9 +18,9 @@ app.use(cors())
 //routes
 app.use(express.json())
 app.use('/api/auth',require('./routes/auth'))
-app.use('/api/customer',require('./routes/customer'))
+//app.use('/api/customer',require('./routes/customer'))
 
 
-app.listen(5001,()=>{
+app.listen(5000,()=>{
     console.log(`listening on 5000`)
 })
