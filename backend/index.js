@@ -1,10 +1,14 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const authRoute = require('./routes/auth')
+const leadRoute = require('./routes/leads')
+const contactRoute = require('./routes/contactDBMS')
+const productRoute = require('./routes/product')
 
 const app = express();
-// const DB = "mongodb+srv://CRM:crm@cluster0.qfxfaex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-const DB = "mongodb://localhost:27017"
+const DB = "mongodb+srv://CRM:crm@cluster0.qfxfaex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+//const DB = "mongodb://localhost:27017"
 mongoose.connect(DB,{
     useNewUrlParser: true,
     useUnifiedTopology : true
@@ -17,8 +21,10 @@ mongoose.connect(DB,{
 app.use(cors())
 //routes
 app.use(express.json())
-app.use('/api/auth',require('./routes/auth'))
-//app.use('/api/customer',require('./routes/customer'))
+app.use('/api/auth', authRoute);
+app.use('/api/leads', leadRoute);
+app.use('/api/contacts',contactRoute);
+
 
 
 app.listen(5000,()=>{
