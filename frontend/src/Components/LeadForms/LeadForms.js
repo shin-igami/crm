@@ -29,7 +29,7 @@ function LeadForms() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault();
 
     try {
       const response = await fetch("http://localhost:5000/api/leads", {
@@ -37,7 +37,7 @@ function LeadForms() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData), // Send the form data as a JSON string
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -46,10 +46,10 @@ function LeadForms() {
 
       const result = await response.json();
       setResponseMessage(result.message || "Form submitted successfully!");
-      setError(null); // Clear errors if the request succeeds
+      setError(null);
     } catch (err) {
       setError(err.message || "Something went wrong!");
-      setResponseMessage(""); // Clear success message if an error occurs
+      setResponseMessage("");
     }
   };
 
@@ -152,7 +152,28 @@ function LeadForms() {
               />
             </div>
           </div>
-          {/* Add other form fields similarly */}
+          <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
+            <div style={{ width: "40%" }}>
+              <label className="form-label m-1">Secondary Phone</label>
+              <input
+                type="text"
+                name="secondaryPhone"
+                className="form-control"
+                value={formData.secondaryPhone}
+                onChange={handleChange}
+              />
+            </div>
+            <div style={{ width: "40%" }}>
+              <label className="form-label m-1">Secondary Email Address</label>
+              <input
+                type="email"
+                name="secondaryEmailAddress"
+                className="form-control"
+                value={formData.secondaryEmailAddress}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Address Information */}
@@ -182,7 +203,58 @@ function LeadForms() {
               />
             </div>
           </div>
-          {/* Add other address fields */}
+          <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
+            <div style={{ width: "40%" }}>
+              <label className="form-label m-1">State</label>
+              <input
+                type="text"
+                name="state"
+                className="form-control"
+                value={formData.state}
+                onChange={handleChange}
+              />
+            </div>
+            <div style={{ width: "40%" }}>
+              <label className="form-label m-1">Zip Code</label>
+              <input
+                type="text"
+                name="zipCode"
+                className="form-control"
+                value={formData.zipCode}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
+            <div style={{ width: "40%" }}>
+              <label className="form-label m-1">Country</label>
+              <input
+                type="text"
+                name="country"
+                className="form-control"
+                value={formData.country}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="LeadForms mt-5">
+          <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
+            <h3>Description</h3>
+          </div>
+          <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
+            <div className="w-100">
+              <label className="form-label m-1">Description</label>
+              <textarea
+                className="form-control"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+              ></textarea>
+            </div>
+          </div>
         </div>
 
         {/* Submit Button */}
