@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 const app = express();
-const DB = "mongodb+srv://CRM:crm@cluster0.qfxfaex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-
+// const DB = "mongodb+srv://CRM:crm@cluster0.qfxfaex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const DB = "mongodb://localhost:27017"
 mongoose.connect(DB,{
     useNewUrlParser: true,
     useUnifiedTopology : true

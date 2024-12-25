@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif; /* Change to your preferred font */
+    background-color: #F5F5F5; /* Light grayish background */
+    color: #333; /* Dark text color for readability */
+    line-height: 1.6; /* Improve text readability */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.Leadstoolbar{
+    background-color: white;
+    
+    width: 100%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding-right: 25px;
+}
+
+/* Dropdown CSS */
+
+.LeadsContent{
+      
+    border: 1px solid black;
+    height: 80vh;
+    display: flex;
+    padding: 15px;
+}
+.LeadLeftContent{
+    background-color: white;
+    border: 1px solid black;
+    width: 20%;
+    margin-right: 15px;
+
+}
+.LeadRightContent{
+    
+    background-color: white;
+    border: 1px solid black;
+  
+    width: 80%;
+}
+.headline{
+    display: flex;
+    font-weight: 400;
+    border-bottom: 2px solid #c1c0c0;
+    padding: 5px 0px;
+}
+.LeadData{
+    display: flex;
+    font-weight: 400;
+    border-bottom: 1px solid #e1dfdf;
+    padding: 10px 0px;
+}
+.items{
+    width: 15%;
+}

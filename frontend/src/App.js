@@ -1,11 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
-import Adminlogin from './Components/Adminlogin/Adminlogin';
+
+import Navbar from './Components/Navbar/Navbar';
+import Leads from './Components/Leads/Leads';
+import LeadForms from './Components/LeadForms/LeadForms';
+import LeadDetails from './Components/LeadDetails/LeadDetails';
 
 function App() {
   return (
     <>
-    <Adminlogin/>
+
+    <Navbar/>
+    <Leads/>
+    <LeadForms/>
+    <LeadDetails/>
     </>
   );
 }
