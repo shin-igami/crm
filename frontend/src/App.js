@@ -11,8 +11,8 @@ function App() {
     <>
 
     <Navbar/>
-    {/* <Leads/>
-    <LeadForms/> */}
+    <Leads/>
+    <LeadForms/>
     <LeadDetails/>
     </>
   );

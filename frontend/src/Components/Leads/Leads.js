@@ -1,30 +1,54 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+
 import './Leads.css'
 function Leads() {
   // Example data array
-  const leads = [
-    { id: 1, name: "John Doe", company: "ABC Corp", email: "john@example.com", phone: "123-456-7890", source: "Website", items: "Item A" },
-    { id: 2, name: "Jane Smith", company: "XYZ Inc", email: "jane@example.com", phone: "987-654-3210", source: "Referral", items: "Item B" },
-    { id: 3, name: "Alice Johnson", company: "Tech Solutions", email: "alice@techsol.com", phone: "555-678-9012", source: "Social Media", items: "Item C" },
-    { id: 4, name: "Bob Brown", company: "Innovate Ltd.", email: "bob@innovate.com", phone: "444-234-5678", source: "Email Campaign", items: "Item D" },
-    { id: 5, name: "Cathy Wilson", company: "GrowthHub", email: "cathy@growthhub.com", phone: "333-567-8901", source: "Conference", items: "Item E" },
-    { id: 6, name: "David Lee", company: "StartUp Inc", email: "david@startup.com", phone: "111-123-4567", source: "Cold Call", items: "Item F" },
-    { id: 7, name: "Ella Green", company: "EcoWorld", email: "ella@ecoworld.com", phone: "222-345-6789", source: "Website", items: "Item G" },
-    { id: 8, name: "Frank Harris", company: "NextGen Tech", email: "frank@nextgen.com", phone: "666-789-0123", source: "Referral", items: "Item H" },
-    { id: 9, name: "Grace Miller", company: "Future Solutions", email: "grace@futuresol.com", phone: "777-890-1234", source: "Social Media", items: "Item I" },
-    { id: 10, name: "Henry White", company: "Prime Partners", email: "henry@primepartners.com", phone: "888-901-2345", source: "Website", items: "Item J" },
-  ];
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch("http://localhost:5000/api/leads"); // Replace with your API URL
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const result = await response.json();
+          setData(result);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+   
+  
+      fetchData();
+    }, []); // Empty dependency array ensures the fetch runs only once on component mount.
+  
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+  
+    const handleLeadClick = (id) => {
+      alert(`Lead ID: ${id}`);
+      // Add additional functionality here
+    };
+
+
 
 // LeadData component
-const LeadData = ({ lead }) => (
-  <div className="LeadData">
-    <div className="items ms-3">{lead.id}</div>
-    <div className="items">{lead.name}</div>
-    <div className="items">{lead.company}</div>
-    <div className="items">{lead.email}</div>
-    <div className="items">{lead.phone}</div>
-    <div className="items">{lead.source}</div>
-    <div className="items">{lead.items}</div>
+const LeadData = ({ data,onClick }) => (
+  <div className="LeadData"  onClick={() => onClick(data._id)}  >
+    <div className="items ms-3"></div>
+    <div className="items">{data.firstName}</div>
+    <div className="items">{data.company}</div>
+    <div className="items">{data.emailAddress}</div>
+    <div className="items">{data.phone}</div>
+    <div className="items">{data.leadSource}</div>
+    <div className="items">{data.leadStatus}</div>
   </div>
 );
   return (
@@ -55,11 +79,11 @@ const LeadData = ({ lead }) => (
             <div className="items">Email lorem</div>
             <div className="items">Phone</div>
             <div className="items">Lead Source</div>
-            <div className="items">Items</div>
+            <div className="items">Leade Status</div>
            </div>
            <div>
-    {leads.map((lead) => (
-      <LeadData key={lead.id} lead={lead} />
+    {data && data.map((lead) => (
+      <LeadData  key={lead.id} data={lead} onClick={handleLeadClick} />
     ))}
   </div>
        </div>

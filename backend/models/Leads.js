@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 // Define the schema
 const LeadSchema = new mongoose.Schema({
     leadOwner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Assuming there's a User model for lead owners
+        type: String,
+         // Assuming there's a User model for lead owners
         
     },
     company: {

@@ -1,6 +1,35 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 
 function LeadDetails() {
+
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const leadId ="676be4360852a48338befd6c";
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`http://localhost:5000/api/leads/${leadId}`);
+            // Replace with your API URL
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const result = await response.json();
+            setData(result);
+          } catch (err) {
+            setError(err.message);
+          } finally {
+            setLoading(false);
+          }
+        };
+  
+     
+    
+        fetchData();
+      }, []); // Empty dependency array ensures the fetch runs only once on component mount.
+    
+      if (loading) return <p>Loading...</p>;
+      if (error) return <p>Error: {error}</p>;
     return (
         <div>
                  <div className="LeadInformation  py-2  " style={{ backgroundColor: 'white' }}>
@@ -52,22 +81,22 @@ function LeadDetails() {
                 <div className="rows d-flex   my-2 w-75 mx-auto">
                     <div class=" d-flex  " style={{ width: "40%", height: "fit-content" }}>
                         <p className=' me-4 my-0  ' style={{ height: "fit-content" }} > Lead Owner</p>
-                        <p className=' my-0  fw-lighter' style={{ height: "fit-content" }}> Maanof group</p>
+                        <p className=' my-0  fw-lighter' style={{ height: "fit-content" }}> {data.leadOwner}</p>
                     </div>
                     <div class=" d-flex   " style={{ width: "40%", height: "fit-content" }}>
                         <p className='   me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > Company</p>
-                        <p className=' my-0    ' style={{ height: "fit-content" }}> Maanof Pvt Ltd</p>
+                        <p className=' my-0    ' style={{ height: "fit-content" }}> {data.company}</p>
                     </div>
 
                 </div>
                 <div className="rows d-flex   my-2 w-75 mx-auto">
                     <div class=" d-flex  " style={{ width: "40%", height: "fit-content" }}>
                         <p className=' me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > First Name</p>
-                        <p className=' my-0    ' style={{ height: "fit-content" }}> Sagil</p>
+                        <p className=' my-0    ' style={{ height: "fit-content" }}> {data.firstName}</p>
                     </div>
                     <div class=" d-flex   " style={{ width: "40%", height: "fit-content" }}>
                         <p className='   me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} >Last Name</p>
-                        <p className=' my-0    ' style={{ height: "fit-content" }}> Faraz</p>
+                        <p className=' my-0    ' style={{ height: "fit-content" }}> {data.lastName} </p>
                     </div>
 
                 </div>
