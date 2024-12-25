@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-
+import { useParams } from 'react-router-dom';
 function LeadDetails() {
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const leadId ="676be4360852a48338befd6c";
+    const { id } = useParams();
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch(`http://localhost:5000/api/leads/${leadId}`);
+            const response = await fetch(`http://localhost:5000/api/leads/${id}`);
             // Replace with your API URL
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);

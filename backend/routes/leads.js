@@ -29,8 +29,6 @@ router.get('/:id', async (req, res) => {
 
 // Add a new lead
 router.post('/', async (req, res) => {
-
-    console.log("hittes",req.body);
     try {
         const leadData = req.body;
         const newLead = new Lead(leadData);
