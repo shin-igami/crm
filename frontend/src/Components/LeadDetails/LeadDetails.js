@@ -40,15 +40,15 @@ function LeadDetails() {
              <div className="rows d-flex   my-2 w-75 mx-auto">
                  <div class=" d-flex  " style={{ width: "40%", height: "fit-content" }}>
                      <p className=' me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} >Lead Owner</p>
-                     <p className=' my-0    ' style={{ height: "fit-content" }}> Maanof Group</p>
+                     <p className=' my-0    ' style={{ height: "fit-content" }}> {data.leadOwner}</p>
                  </div>
              
 
              </div>
              <div className="rows d-flex   my-2 w-75 mx-auto">
                  <div class=" d-flex  " style={{ width: "40%", height: "fit-content" }}>
-                     <p className=' me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > Email</p>
-                     <p className=' my-0    ' style={{ height: "fit-content" }}> sagilfaraz@15gmail.com</p>
+                     <p className=' me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > Emaail</p>
+                     <p className=' my-0    ' style={{ height: "fit-content" }}> {data.emailAddress}</p>
                  </div>
              
 
@@ -56,7 +56,7 @@ function LeadDetails() {
              <div className="rows d-flex   my-2 w-75 mx-auto">
                  <div class=" d-flex  " style={{ width: "40%", height: "fit-content" }}>
                      <p className=' me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > Phone</p>
-                     <p className=' my-0    ' style={{ height: "fit-content" }}> 8709057771</p>
+                     <p className=' my-0    ' style={{ height: "fit-content" }}> {data.phone}</p>
                  </div>
               
 
@@ -64,7 +64,7 @@ function LeadDetails() {
              <div className="rows d-flex   my-2 w-75 mx-auto">
                  <div class=" d-flex  " style={{ width: "40%", height: "fit-content" }}>
                      <p className=' me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > Lead Status</p>
-                     <p className=' my-0    ' style={{ height: "fit-content" }}> InProgress</p>
+                     <p className=' my-0    ' style={{ height: "fit-content" }}> {data.leadStatus}</p>
                  </div>
           
 
@@ -103,33 +103,33 @@ function LeadDetails() {
                 <div className="rows d-flex   my-2 w-75 mx-auto">
                     <div class=" d-flex  " style={{ width: "40%", height: "fit-content" }}>
                         <p className=' me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > Phone</p>
-                        <p className=' my-0    ' style={{ height: "fit-content" }}> 8709057771</p>
+                        <p className=' my-0    ' style={{ height: "fit-content" }}> {data.phone}</p>
                     </div>
                     <div class=" d-flex   " style={{ width: "40%", height: "fit-content" }}>
                         <p className='   me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > Email</p>
-                        <p className=' my-0    ' style={{ height: "fit-content" }}> faraz@gmail.com</p>
+                        <p className=' my-0    ' style={{ height: "fit-content" }}> {data.emailAddress}</p>
                     </div>
 
                 </div>
                 <div className="rows d-flex   my-2 w-75 mx-auto">
                     <div class=" d-flex  " style={{ width: "40%", height: "fit-content" }}>
                         <p className=' me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} >Lead Source</p>
-                        <p className=' my-0    ' style={{ height: "fit-content" }}> Aman</p>
+                        <p className=' my-0    ' style={{ height: "fit-content" }}> {data.leadSource}</p>
                     </div>
                     <div class=" d-flex   " style={{ width: "40%", height: "fit-content" }}>
                         <p className='   me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > Lead Status</p>
-                        <p className=' my-0    ' style={{ height: "fit-content" }}> InProgress</p>
+                        <p className=' my-0    ' style={{ height: "fit-content" }}> {data.leadStatus}</p>
                     </div>
 
                 </div>
                 <div className="rows d-flex   my-2 w-75 mx-auto">
                     <div class=" d-flex  " style={{ width: "40%", height: "fit-content" }}>
                         <p className=' me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} >Secondary Phone</p>
-                        <p className=' my-0    ' style={{ height: "fit-content" }}> 42352434323</p>
+                        <p className=' my-0    ' style={{ height: "fit-content" }}>{data.secondaryPhone} </p>
                     </div>
                     <div class=" d-flex   " style={{ width: "40%", height: "fit-content" }}>
                         <p className='   me-4 my-0 fw-semibold  ' style={{ height: "fit-content" }} > Secondary email</p>
-                        <p className=' my-0    ' style={{ height: "fit-content" }}> sagil@gmail.com</p>
+                        <p className=' my-0    ' style={{ height: "fit-content" }}> {data.secondaryEmailAddress}</p>
                     </div>
 
                 </div>
