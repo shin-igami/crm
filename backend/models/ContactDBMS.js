@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 // Define the ContactDBMS schema
 const ContactSchema = new mongoose.Schema({
     leadOwner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Assuming there's a User model
+        type: String,
     },
     company: {
         type: String,
@@ -26,12 +25,10 @@ const ContactSchema = new mongoose.Schema({
     },
     leadSource: {
         type: String,
-        enum: ['Website', 'Referral', 'Advertisement', 'Social Media', 'Other'], // Example sources
       
     },
     leadStatus: {
         type: String,
-        enum: ['New', 'Contacted', 'Qualified', 'Converted', 'Closed'],
     
     },
     secondaryPhone: {

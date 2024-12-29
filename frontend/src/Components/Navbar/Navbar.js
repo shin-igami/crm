@@ -14,7 +14,7 @@ function Navbar() {
     <ul>
       <li><a class="active" href="/leads">Home</a></li>
       <li><a href="/leads">Leads</a></li>
-      <li><a href="/ContactDBMS">ContactDBMS</a></li>
+      <li><a href="/contact">ContactDBMS</a></li>
       <li><a href="#">Contact</a></li>
       
     </ul>

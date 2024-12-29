@@ -30,7 +30,7 @@ function ContactDBMSlist() {
   if (error) return <p>Error: {error}</p>;
 
   const handleLeadClick = (id) => {
-    navigate(`/leads/details/${id}`);
+    navigate(`/contact/details/${id}`);
     // Add additional functionality here
   };
   const CreateForm = () => {

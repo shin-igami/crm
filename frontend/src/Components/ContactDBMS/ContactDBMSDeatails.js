@@ -12,7 +12,7 @@ function ContactDBMSDeatails() {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/contact/${id}`);
+          const response = await fetch(`http://localhost:5000/api/contacts/${id}`);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }

@@ -18,14 +18,13 @@ function App() {
         {/* Navbar will always be visible */}
         <Navbar />
         {/* <ContactDBMSForm/> */}
-        <ContactDBMSDeatails/>
-
+       
         {/* Define Routes for different components */}
         <Routes>
           <Route path="/leads" element={<Leads />} />
           <Route path="/leads/add" element={<LeadForms />} />
           <Route path="/leads/details/:id" element={<LeadDetails />} />
-          <Route path="/ContactDBMS" element={<ContactDBMSlist/>} />
+          <Route path="/contact" element={<ContactDBMSlist/>} />
           <Route path="/contact/details/:id" element={ <ContactDBMSDeatails/>} />
 
         </Routes>
