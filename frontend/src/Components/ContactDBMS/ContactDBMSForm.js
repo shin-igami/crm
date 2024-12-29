@@ -32,7 +32,7 @@ function ContactDBMSForm() {
         e.preventDefault();
     
         try {
-          const response = await fetch("http://localhost:5000/api/leads", {
+          const response = await fetch("http://localhost:5000/api/contacts", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -57,7 +57,7 @@ function ContactDBMSForm() {
         {/* Lead Information */}
         <div className="LeadForms">
           <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
-            <h3>Lead Information</h3>
+            <h3>Lead Contact Information</h3>
           </div>
           <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
             <div style={{ width: "40%" }}>

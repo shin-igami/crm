@@ -25,6 +25,7 @@ function App() {
           <Route path="/leads/add" element={<LeadForms />} />
           <Route path="/leads/details/:id" element={<LeadDetails />} />
           <Route path="/contact" element={<ContactDBMSlist/>} />
+          <Route path="/contact/add" element={<ContactDBMSForm/>} />
           <Route path="/contact/details/:id" element={ <ContactDBMSDeatails/>} />
 
         </Routes>

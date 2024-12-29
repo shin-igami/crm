@@ -76,7 +76,7 @@ function ContactDBMSDeatails() {
     const handleDelete = async () => {
       if (window.confirm("Are you sure you want to delete this record?")) {
         try {
-          const response = await fetch(`http://localhost:5000/api/leads/${id}`, {
+          const response = await fetch(`http://localhost:5000/api/contacts/${id}`, {
             method: "DELETE",
           });
   

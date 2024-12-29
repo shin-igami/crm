@@ -34,7 +34,7 @@ function ContactDBMSlist() {
     // Add additional functionality here
   };
   const CreateForm = () => {
-    navigate(`/leads/add`);
+    navigate(`/contact/add`);
     // Add additional functionality here
   };
 
