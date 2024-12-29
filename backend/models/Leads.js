@@ -30,13 +30,9 @@ const LeadSchema = new mongoose.Schema({
     },
     leadSource: {
         type: String,
-        enum: ['Website', 'Referral', 'Advertisement', 'Social Media', 'Other'], // Example sources
- 
     },
     leadStatus: {
         type: String,
-        enum: ['New', 'Contacted', 'Qualified', 'Converted', 'Closed'],
-       
     },
     secondaryPhone: {
         type: String,

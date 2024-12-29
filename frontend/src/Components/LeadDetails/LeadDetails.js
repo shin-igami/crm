@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 function LeadDetails() {
   const [data, setData] = useState(null);
@@ -8,6 +9,29 @@ function LeadDetails() {
   const [editField, setEditField] = useState(null);
   const [editValue, setEditValue] = useState("");
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const handleConvert = async () => {
+    try {
+        const response = await fetch(`http://localhost:5000/api/leads/convert/${id}`, {
+            method: "POST",
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Get the converted contact data from the response
+        const convertedContact = await response.json();
+
+
+        // Redirect to the contact details page with the new contact ID
+        navigate(`/contact/details/${convertedContact.contact._id}`);
+    } catch (error) {
+        alert("Failed to convert lead: " + error.message);
+
+    }
+}
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,7 +167,7 @@ function LeadDetails() {
       <div className="d-flex justify-content-end mb-3">
         <button className="btn btn-danger btn-sm me-2" onClick={handleDelete}>Delete Record</button>
         <button className="btn btn-secondary btn-sm me-2">Action 2</button>
-        <button className="btn btn-success btn-sm">Action 3</button>
+        <button className="btn btn-success btn-sm" onClick={handleConvert}>Convert</button>
       </div>
 
       <div className="card mb-4 shadow-sm border-0 rounded-4">

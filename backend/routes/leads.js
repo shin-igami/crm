@@ -105,6 +105,7 @@ router.post('/convert/:id', async (req, res) => {
             contact: savedContact,
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: 'Failed to convert lead', details: error.message });
     }
 });
