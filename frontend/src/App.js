@@ -18,12 +18,7 @@ function App() {
         {/* Navbar will always be visible */}
         <Navbar />
         {/* <ContactDBMSForm/> */}
-<<<<<<< HEAD
-        {/* <ContactDBMSDeatails/> */}
-
-=======
        
->>>>>>> 4493c1acc9d7db20e1cfb7dc3fc69c9840366739
         {/* Define Routes for different components */}
         <Routes>
           <Route path="/leads" element={<Leads />} />
