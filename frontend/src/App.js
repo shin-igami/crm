@@ -7,6 +7,9 @@ import LeadForms from './Components/LeadForms/LeadForms.js';
 import LeadDetails from './Components/LeadDetails/LeadDetails.js';
 
 import './App.css';
+import ContactDBMSlist from './Components/ContactDBMS/ContactDBMSlist.js';
+import ContactDBMSForm from './Components/ContactDBMS/ContactDBMSForm.js';
+import ContactDBMSDeatails from './Components/ContactDBMS/ContactDBMSDeatails.js';
 
 function App() {
   return (
@@ -14,12 +17,17 @@ function App() {
       <>
         {/* Navbar will always be visible */}
         <Navbar />
+        {/* <ContactDBMSForm/> */}
+        <ContactDBMSDeatails/>
 
         {/* Define Routes for different components */}
         <Routes>
           <Route path="/leads" element={<Leads />} />
           <Route path="/leads/add" element={<LeadForms />} />
           <Route path="/leads/details/:id" element={<LeadDetails />} />
+          <Route path="/ContactDBMS" element={<ContactDBMSlist/>} />
+          <Route path="/contact/details/:id" element={ <ContactDBMSDeatails/>} />
+
         </Routes>
       </>
     </Router>

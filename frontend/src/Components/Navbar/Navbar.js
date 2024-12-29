@@ -12,9 +12,9 @@ function Navbar() {
     </label>
     <label class="logo">CRM</label>
     <ul>
-      <li><a class="active" href="#">Home</a></li>
-      <li><a href="#">Leads</a></li>
-      <li><a href="#">ContactDBMS</a></li>
+      <li><a class="active" href="/leads">Home</a></li>
+      <li><a href="/leads">Leads</a></li>
+      <li><a href="/ContactDBMS">ContactDBMS</a></li>
       <li><a href="#">Contact</a></li>
       
     </ul>

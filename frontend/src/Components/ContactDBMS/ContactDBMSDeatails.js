@@ -1,143 +1,142 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-function LeadDetails() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [editField, setEditField] = useState(null);
-  const [editValue, setEditValue] = useState("");
-  const { id } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/leads/${id}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+function ContactDBMSDeatails() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [editField, setEditField] = useState(null);
+    const [editValue, setEditValue] = useState("");
+    const { id } = useParams();
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`http://localhost:5000/api/contact/${id}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const result = await response.json();
+          setData(result);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
         }
-        const result = await response.json();
-        setData(result);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+      };
+      fetchData();
+    }, [id]);
+  
+    const handleEditClick = (field, value) => {
+      setEditField(field);
+      setEditValue(value);
     };
-    fetchData();
-  }, [id]);
-
-  const handleEditClick = (field, value) => {
-    setEditField(field);
-    setEditValue(value);
-  };
-
-  const handleUpdate = async () => {
-    const updatedData = {
-      [editField]: editValue,
-    };
-
-    try {
-      // Send the updated data to the backend
-      const response = await fetch(`http://localhost:5000/api/leads/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      // Get the updated lead data from the response
-      const updatedLead = await response.json();
-
-      // Update the state with the updated data
-      setData((prevData) => ({
-        ...prevData,
-        [editField]: updatedLead[editField],  // Update only the edited field
-      }));
-
-      // Clear the edit field
-      setEditField(null);
-    } catch (error) {
-      alert("Failed to update lead: " + error.message);
-    }
-  };
-
-  const handleCancel = () => {
-    // Reset the edit field and remove focus from the input
-    setEditField(null);
-    setEditValue("");  // Optionally reset the value to its original state
-  };
-
-  const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this record?")) {
+  
+    const handleUpdate = async () => {
+      const updatedData = {
+        [editField]: editValue,
+      };
+  
       try {
+        // Send the updated data to the backend
         const response = await fetch(`http://localhost:5000/api/leads/${id}`, {
-          method: "DELETE",
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
         });
-
+  
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        alert("Record deleted successfully.");
-        // history.push("/leads"); // Redirect to the leads list page or another appropriate page
-      } catch (err) {
-        alert("Error deleting record: " + err.message);
+  
+        // Get the updated lead data from the response
+        const updatedLead = await response.json();
+  
+        // Update the state with the updated data
+        setData((prevData) => ({
+          ...prevData,
+          [editField]: updatedLead[editField],  // Update only the edited field
+        }));
+  
+        // Clear the edit field
+        setEditField(null);
+      } catch (error) {
+        alert("Failed to update lead: " + error.message);
       }
-    }
-  };
-
-  if (loading) return <div className="text-center py-5 text-secondary">Loading...</div>;
-  if (error) return <div className="text-center py-5 text-danger">Error: {error}</div>;
-
-  const renderField = (label, fieldName, value, isEditable = true) => (
-    <div
-      className="d-flex justify-content-between align-items-center mb-2 p-2 rounded"
-      style={{
-        position: "relative",
-        border: editField === fieldName ? "1px solid #007bff" : "1px solid transparent",
-        cursor: isEditable ? "pointer" : "default",
-      }}
-      onMouseEnter={(e) => (e.currentTarget.style.border = "1px solid #007bff")}
-      onMouseLeave={(e) => (e.currentTarget.style.border = editField === fieldName ? "1px solid #007bff" : "1px solid transparent")}
-      onClick={() => isEditable && handleEditClick(fieldName, value)}
-    >
-      <p className="mb-0 text-muted" style={{ marginRight: "10px" }}>{label}:</p>
-      {editField === fieldName ? (
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1 }}>
-          <input
-            type="text"
-            value={editValue}
-            onChange={(e) => setEditValue(e.target.value)}
-            className="form-control"
-            style={{ flex: 1, color: "black" }}
-          />
-          <button
-            className="btn btn-success btn-sm rounded-circle"
-            onClick={handleUpdate}
-            style={{ width: "30px", height: "30px", display: "flex", justifyContent: "center", alignItems: "center" }}
-          >
-            <i className="fa-solid fa-check"></i>
-          </button>
-          <button
-            className="btn btn-danger btn-sm rounded-circle"
-            onClick={handleCancel}
-            style={{ width: "30px", height: "30px", display: "flex", justifyContent: "center", alignItems: "center" }}
-          >
-            <i className="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-      ) : (
-        <h5 className="text-secondary mb-0" style={{ color: "black", flex: 1 }}>{value || "N/A"}</h5>
-      )}
-    </div>
-  );
-
+    };
+  
+    const handleCancel = () => {
+      // Reset the edit field and remove focus from the input
+      setEditField(null);
+      setEditValue("");  // Optionally reset the value to its original state
+    };
+  
+    const handleDelete = async () => {
+      if (window.confirm("Are you sure you want to delete this record?")) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/leads/${id}`, {
+            method: "DELETE",
+          });
+  
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+  
+          alert("Record deleted successfully.");
+          // history.push("/leads"); // Redirect to the leads list page or another appropriate page
+        } catch (err) {
+          alert("Error deleting record: " + err.message);
+        }
+      }
+    };
+  
+    if (loading) return <div className="text-center py-5 text-secondary">Loading...</div>;
+    if (error) return <div className="text-center py-5 text-danger">Error: {error}</div>;
+  
+    const renderField = (label, fieldName, value, isEditable = true) => (
+      <div
+        className="d-flex justify-content-between align-items-center mb-2 p-2 rounded"
+        style={{
+          position: "relative",
+          border: editField === fieldName ? "1px solid #007bff" : "1px solid transparent",
+          cursor: isEditable ? "pointer" : "default",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.border = "1px solid #007bff")}
+        onMouseLeave={(e) => (e.currentTarget.style.border = editField === fieldName ? "1px solid #007bff" : "1px solid transparent")}
+        onClick={() => isEditable && handleEditClick(fieldName, value)}
+      >
+        <p className="mb-0 text-muted" style={{ marginRight: "10px" }}>{label}:</p>
+        {editField === fieldName ? (
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1 }}>
+            <input
+              type="text"
+              value={editValue}
+              onChange={(e) => setEditValue(e.target.value)}
+              className="form-control"
+              style={{ flex: 1, color: "black" }}
+            />
+            <button
+              className="btn btn-success btn-sm rounded-circle"
+              onClick={handleUpdate}
+              style={{ width: "30px", height: "30px", display: "flex", justifyContent: "center", alignItems: "center" }}
+            >
+              <i className="fa-solid fa-check"></i>
+            </button>
+            <button
+              className="btn btn-danger btn-sm rounded-circle"
+              onClick={handleCancel}
+              style={{ width: "30px", height: "30px", display: "flex", justifyContent: "center", alignItems: "center" }}
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        ) : (
+          <h5 className="text-secondary mb-0" style={{ color: "black", flex: 1 }}>{value || "N/A"}</h5>
+        )}
+      </div>
+    );
   return (
     <div className="container py-5">
       <div className="d-flex justify-content-end mb-3">
@@ -263,7 +262,7 @@ function LeadDetails() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default LeadDetails;
+export default ContactDBMSDeatails
