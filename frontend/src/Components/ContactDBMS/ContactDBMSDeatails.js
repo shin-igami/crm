@@ -12,7 +12,7 @@ function ContactDBMSDeatails() {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/contact/${id}`);
+          const response = await fetch(`http://localhost:5000/api/contacts/${id}`);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -39,7 +39,7 @@ function ContactDBMSDeatails() {
   
       try {
         // Send the updated data to the backend
-        const response = await fetch(`http://localhost:5000/api/leads/${id}`, {
+        const response = await fetch(`http://localhost:5000/api/contacts/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

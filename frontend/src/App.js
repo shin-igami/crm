@@ -18,7 +18,7 @@ function App() {
         {/* Navbar will always be visible */}
         <Navbar />
         {/* <ContactDBMSForm/> */}
-        <ContactDBMSDeatails/>
+        {/* <ContactDBMSDeatails/> */}
 
         {/* Define Routes for different components */}
         <Routes>
