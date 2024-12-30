@@ -1,60 +1,86 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif; /* Change to your preferred font */
-    background-color: #F5F5F5; /* Light grayish background */
-    color: #333; /* Dark text color for readability */
-    line-height: 1.6; /* Improve text readability */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+  background-color: #f4f6f9;
+  font-family: 'Roboto', sans-serif;
 }
 
-.Leadstoolbar{
-    background-color: white;
+.leads-container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  margin-top: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+}
+
+.table-light th {
+  background-color: #e9ecef;
+  color: #495057;
+  font-weight: bold;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.clickable-row {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.clickable-row:hover {
+  background-color: #edf2f7;
+  transform: scale(1.01);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.btn-outline-secondary {
+  border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #e2e6ea;
+}
+
+.fas {
+  font-size: 1.1em;
+}
+
+.table-responsive {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Custom CSS to tweak responsiveness */
+@media (max-width: 768px) {
+    .btn-group button {
+      width: 100%; /* Buttons will take full width on smaller screens */
+      margin-bottom: 10px; /* Space between stacked buttons */
+    }
     
-    width: 100%;
-    border: 1px solid black;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-    padding-right: 25px;
-}
-
-/* Dropdown CSS */
-
-.LeadsContent{
-      
-    border: 1px solid black;
-    height: 80vh;
-    display: flex;
-    padding: 15px;
-}
-.LeadLeftContent{
-    background-color: white;
-    border: 1px solid black;
-    width: 20%;
-    margin-right: 15px;
-
-}
-.LeadRightContent{
-    
-    background-color: white;
-    border: 1px solid black;
+    .table-responsive {
+      margin-top: 20px;
+    }
   
-    width: 80%;
-}
-.headline{
-    display: flex;
-    font-weight: 400;
-    border-bottom: 2px solid #c1c0c0;
-    padding: 5px 0px;
-}
-.LeadData{
-    display: flex;
-    font-weight: 400;
-    border-bottom: 1px solid #e1dfdf;
-    padding: 10px 0px;
-}
-.items{
-    width: 15%;
-}
+    .dropdown-menu {
+      position: static !important;
+      float: none !important;
+    }
+  }
+  
