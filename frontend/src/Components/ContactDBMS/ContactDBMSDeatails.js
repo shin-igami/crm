@@ -85,6 +85,22 @@ function ContactDBMSDeatails() {
             }
         }
     };
+    const handleAddCustomField = () => {
+        const newFieldKey = window.prompt("Enter the name of the new custom field:");
+        
+        if (!newFieldKey) {
+          alert("Custom field name cannot be empty!");
+          return;
+        }
+    
+        if (data.customFields && data.customFields[newFieldKey]) {
+          alert("A custom field with this name already exists!");
+          return;
+        }
+    
+        const newCustomFields = { ...data.customFields, [newFieldKey]: "" };
+        setData((prevData) => ({ ...prevData, customFields: newCustomFields }));
+      };
 
     if (loading) return <div className="text-center py-5 text-secondary">Loading...</div>;
     if (error) return <div className="text-center py-5 text-danger">Error: {error}</div>;
@@ -142,7 +158,7 @@ function ContactDBMSDeatails() {
 
             <div className="card mb-4 shadow-sm border-0 rounded-4">
                 <div className="card-header bg-secondary text-white text-center rounded-top-4">
-                    <h3 className="mb-0">Lead Details</h3>
+                    <h3 className="mb-0">Contact DBMS Details</h3>
                 </div>
                 <div className="card-body">
                     <div className="row mb-2">
@@ -222,6 +238,25 @@ function ContactDBMSDeatails() {
                     </div>
                 </div>
             </div>
+            <div className="card shadow-sm border-0 rounded-4">
+        <div className="card-header bg-secondary text-white text-center rounded-top-4">
+          <h3 className="mb-0">Custom Fields</h3>
+        </div>
+        <div className="card-body">
+          {data.customFields &&
+            Object.entries(data.customFields).map(([field, value]) => (
+              <div className="col-lg-6 col-md-12" key={field}>
+                {renderField(field, `customFields.${field}`, value)}
+              </div>
+            ))}
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={handleAddCustomField}
+          >
+            Add Custom Field
+          </button>
+        </div>
+      </div>
 
             <div className="card shadow-sm border-0 rounded-4">
                 <div className="card-header bg-secondary text-white text-center rounded-top-4">

@@ -18,6 +18,7 @@ function LeadForms() {
     zipCode: "",
     country: "",
     description: "",
+    customFields: {},
   });
 
   const [responseMessage, setResponseMessage] = useState("");
@@ -26,6 +27,23 @@ function LeadForms() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCustomFieldChange = (key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      customFields: { ...prev.customFields, [key]: value },
+    }));
+  };
+
+  const addCustomField = () => {
+    const fieldName = prompt("Enter the name of the custom field:");
+    if (fieldName) {
+      setFormData((prev) => ({
+        ...prev,
+        customFields: { ...prev.customFields, [fieldName]: "" },
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -232,6 +250,31 @@ function LeadForms() {
             />
           </div>
         </div>
+      </div>
+
+      {/* Custom Fields Section */}
+      <div className="container my-4">
+        <h3 className="text-center">Custom Fields</h3>
+        <button
+          type="button"
+          className="btn btn-secondary mb-3"
+          onClick={addCustomField}
+        >
+          Add Field
+        </button>
+        {Object.entries(formData.customFields).map(([key, value]) => (
+          <div className="row mb-3" key={key}>
+            <div className="col-md-6">
+              <label className="form-label">{key}</label>
+              <input
+                type="text"
+                className="form-control"
+                value={value}
+                onChange={(e) => handleCustomFieldChange(key, e.target.value)}
+              />
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Description */}

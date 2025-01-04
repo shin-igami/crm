@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function LeadDetails() {
   const [data, setData] = useState(null);
@@ -13,25 +13,20 @@ function LeadDetails() {
 
   const handleConvert = async () => {
     try {
-        const response = await fetch(`http://localhost:5000/api/leads/convert/${id}`, {
-            method: "POST",
-        });
+      const response = await fetch(`http://localhost:5000/api/leads/convert/${id}`, {
+        method: "POST",
+      });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-        // Get the converted contact data from the response
-        const convertedContact = await response.json();
-
-
-        // Redirect to the contact details page with the new contact ID
-        navigate(`/contact/details/${convertedContact.contact._id}`);
+      const convertedContact = await response.json();
+      navigate(`/contact/details/${convertedContact.contact._id}`);
     } catch (error) {
-        alert("Failed to convert lead: " + error.message);
-
+      alert("Failed to convert lead: " + error.message);
     }
-}
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,12 +52,11 @@ function LeadDetails() {
   };
 
   const handleUpdate = async () => {
-    const updatedData = {
-      [editField]: editValue,
-    };
+    const updatedData = editField.startsWith("customFields.")
+      ? { customFields: { ...data.customFields, [editField.split(".")[1]]: editValue } }
+      : { [editField]: editValue };
 
     try {
-      // Send the updated data to the backend
       const response = await fetch(`http://localhost:5000/api/leads/${id}`, {
         method: "PUT",
         headers: {
@@ -75,16 +69,12 @@ function LeadDetails() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Get the updated lead data from the response
       const updatedLead = await response.json();
-
-      // Update the state with the updated data
       setData((prevData) => ({
         ...prevData,
-        [editField]: updatedLead[editField],  // Update only the edited field
+        ...updatedLead,
       }));
 
-      // Clear the edit field
       setEditField(null);
     } catch (error) {
       alert("Failed to update lead: " + error.message);
@@ -92,9 +82,8 @@ function LeadDetails() {
   };
 
   const handleCancel = () => {
-    // Reset the edit field and remove focus from the input
     setEditField(null);
-    setEditValue("");  // Optionally reset the value to its original state
+    setEditValue("");
   };
 
   const handleDelete = async () => {
@@ -109,11 +98,28 @@ function LeadDetails() {
         }
 
         alert("Record deleted successfully.");
-        // history.push("/leads"); // Redirect to the leads list page or another appropriate page
+        navigate("/leads");
       } catch (err) {
         alert("Error deleting record: " + err.message);
       }
     }
+  };
+
+  const handleAddCustomField = () => {
+    const newFieldKey = window.prompt("Enter the name of the new custom field:");
+    
+    if (!newFieldKey) {
+      alert("Custom field name cannot be empty!");
+      return;
+    }
+
+    if (data.customFields && data.customFields[newFieldKey]) {
+      alert("A custom field with this name already exists!");
+      return;
+    }
+
+    const newCustomFields = { ...data.customFields, [newFieldKey]: "" };
+    setData((prevData) => ({ ...prevData, customFields: newCustomFields }));
   };
 
   if (loading) return <div className="text-center py-5 text-secondary">Loading...</div>;
@@ -220,26 +226,12 @@ function LeadDetails() {
               {renderField("Secondary Phone", "secondaryPhone", data.secondaryPhone)}
             </div>
             <div className="col-lg-6 col-md-12">
-              {renderField("Secondary Email", "secondaryEmailAddress", data.secondaryEmailAddress)}
-            </div>
-          </div>
-          <div className="row mb-2">
-            <div className="col-lg-4 col-md-6">
-              {renderField("Street", "street", data.street)}
-            </div>
-            <div className="col-lg-4 col-md-6">
-              {renderField("City", "city", data.city)}
-            </div>
-            <div className="col-lg-4 col-md-6">
-              {renderField("State", "state", data.state)}
+              {renderField("Secondary Email", "secondaryEmail", data.secondaryEmail)}
             </div>
           </div>
           <div className="row mb-2">
             <div className="col-lg-6 col-md-12">
-              {renderField("Zip Code", "zipCode", data.zipCode)}
-            </div>
-            <div className="col-lg-6 col-md-12">
-              {renderField("Country", "country", data.country)}
+              {renderField("Website", "website", data.website)}
             </div>
           </div>
         </div>
@@ -247,43 +239,21 @@ function LeadDetails() {
 
       <div className="card shadow-sm border-0 rounded-4">
         <div className="card-header bg-secondary text-white text-center rounded-top-4">
-          <h3 className="mb-0">Products</h3>
+          <h3 className="mb-0">Custom Fields</h3>
         </div>
         <div className="card-body">
-          <div className="table-responsive">
-            <table className="table table-striped table-hover">
-              <thead className="bg-dark text-white">
-                <tr>
-                  <th>Product Name</th>
-                  <th>Product Code</th>
-                  <th>Product Active</th>
-                  <th>Manufacturer</th>
-                  <th>Support Start Date</th>
-                  <th>Support End Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.products && data.products.length > 0 ? (
-                  data.products.map((product, index) => (
-                    <tr key={index} className="align-middle">
-                      <td>{product.name}</td>
-                      <td>{product.code}</td>
-                      <td className={product.active ? "text-success fw-bold" : "text-danger fw-bold"}>{product.active ? "Yes" : "No"}</td>
-                      <td>{product.manufacturer}</td>
-                      <td>{product.supportStartDate}</td>
-                      <td>{product.supportEndDate}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="text-center text-muted">
-                      No products available.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          {data.customFields &&
+            Object.entries(data.customFields).map(([field, value]) => (
+              <div className="col-lg-6 col-md-12" key={field}>
+                {renderField(field, `customFields.${field}`, value)}
+              </div>
+            ))}
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={handleAddCustomField}
+          >
+            Add Custom Field
+          </button>
         </div>
       </div>
     </div>

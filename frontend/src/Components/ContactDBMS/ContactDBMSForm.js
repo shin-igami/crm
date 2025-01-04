@@ -18,8 +18,9 @@ function ContactDBMSForm() {
     zipCode: "",
     country: "",
     description: "",
-    PAN: "",  // New PAN field
-    AadhaarNumber: "",  // New Aadhaar Number field
+    PAN: "", // New PAN field
+    AadhaarNumber: "", // New Aadhaar Number field
+    customFields: {},
   });
 
   const [responseMessage, setResponseMessage] = useState("");
@@ -28,6 +29,23 @@ function ContactDBMSForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCustomFieldChange = (key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      customFields: { ...prev.customFields, [key]: value },
+    }));
+  };
+
+  const addCustomField = () => {
+    const fieldName = prompt("Enter the name of the custom field:");
+    if (fieldName) {
+      setFormData((prev) => ({
+        ...prev,
+        customFields: { ...prev.customFields, [fieldName]: "" },
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -237,11 +255,19 @@ function ContactDBMSForm() {
               onChange={handleChange}
             />
           </div>
+          <div className="col-md-5 col-sm-12">
+            <label className="form-label m-1">Description</label>
+            <textarea
+              name="description"
+              className="form-control"
+              value={formData.description}
+              onChange={handleChange}
+            ></textarea>
+          </div>
         </div>
       </div>
-
-      {/* Additional Information */}
-      <div className="LeadForms mt-5">
+  {/* Additional Information */}
+  <div className="LeadForms mt-5">
         <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
           <h3>Additional Information</h3>
         </div>
@@ -268,39 +294,55 @@ function ContactDBMSForm() {
           </div>
         </div>
       </div>
-
-      {/* Description */}
+      {/* Custom Fields */}
       <div className="LeadForms mt-5">
         <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
-          <h3>Description</h3>
+          <h3>Custom Fields</h3>
         </div>
-        <div className="rows d-flex justify-content-between my-2 w-75 mx-auto">
-          <div className="col-12">
-            <label className="form-label m-1">Description</label>
-            <textarea
-              className="form-control"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-            ></textarea>
+        {Object.entries(formData.customFields).map(([key, value], index) => (
+          <div
+            key={index}
+            className="rows d-flex justify-content-between my-2 w-75 mx-auto"
+          >
+            <div className="col-md-5 col-sm-12">
+              <label className="form-label m-1">{key}</label>
+              <input
+                type="text"
+                name={key}
+                className="form-control"
+                value={value}
+                onChange={(e) => handleCustomFieldChange(key, e.target.value)}
+              />
+            </div>
           </div>
-        </div>
-      </div>
-
-      {/* Submit Button */}
-      <div className="LeadForms mt-5">
-        <div className="rows d-flex justify-content-end my-2 w-75 mx-auto">
-          <button type="submit" className="btn btn-primary btn-sm py-2 px-5">
-            Submit
+        ))}
+        <div className="rows d-flex justify-content-center my-2 w-75 mx-auto">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={addCustomField}
+          >
+            Add Custom Field
           </button>
         </div>
       </div>
 
-      {/* Display Response or Error */}
-      {responseMessage && <p className="text-success">{responseMessage}</p>}
-      {error && <p className="text-danger">{error}</p>}
+      <div className="rows d-flex justify-content-center my-4 w-75 mx-auto">
+        <button type="submit" className="btn btn-success">
+          Submit
+        </button>
+      </div>
+      {responseMessage && (
+        <div className="alert alert-success text-center">
+          {responseMessage}
+        </div>
+      )}
+      {error && (
+        <div className="alert alert-danger text-center">{error}</div>
+      )}
     </form>
   );
 }
 
 export default ContactDBMSForm;
+  
