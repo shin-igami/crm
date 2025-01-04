@@ -25,6 +25,23 @@ router.post('/', async (req, res) => {
     }
 });
 
+//bulk post for creating multiple products
+router.post('/bulk', async (req, res) => {
+    try {
+        const products = req.body;
+
+        // Validate required fields
+        if (!Array.isArray(products) || products.some((product) =>!product.product_name)) {
+            return res.status(400).json({ error: 'Missing required fields in products array' });
+        }
+
+        const newProducts = await Product.insertMany(products);
+        res.status(201).json(newProducts);
+    } catch (error) {
+        res.status(500).json({ error: 'Error creating products', details: error.message });
+    }
+});
+
 // GET all Products
 router.get('/', async (req, res) => {
     try {

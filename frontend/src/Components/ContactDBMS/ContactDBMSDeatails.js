@@ -32,10 +32,32 @@ function ContactDBMSDeatails() {
         setEditValue(value);
     };
 
+    const handleAddProduct = async (product) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/contacts/${id}/add-product`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(product),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const newLead = await response.json();
+
+            setData((prevData) => [...prevData, newLead]);
+        } catch (error) {
+            alert("Failed to add product: " + error.message);
+        }
+    };
+
     const handleUpdate = async () => {
-        const updatedData = {
-            [editField]: editValue,
-        };
+        const updatedData = editField.startsWith("customFields.")
+            ? { customFields: { ...data.customFields, [editField.split(".")[1]]: editValue } }
+            : { [editField]: editValue };
 
         try {
             const response = await fetch(`http://localhost:5000/api/contacts/${id}`, {
@@ -54,7 +76,7 @@ function ContactDBMSDeatails() {
 
             setData((prevData) => ({
                 ...prevData,
-                [editField]: updatedLead[editField],
+                ...updatedLead,
             }));
 
             setEditField(null);
@@ -87,20 +109,20 @@ function ContactDBMSDeatails() {
     };
     const handleAddCustomField = () => {
         const newFieldKey = window.prompt("Enter the name of the new custom field:");
-        
+
         if (!newFieldKey) {
-          alert("Custom field name cannot be empty!");
-          return;
+            alert("Custom field name cannot be empty!");
+            return;
         }
-    
+
         if (data.customFields && data.customFields[newFieldKey]) {
-          alert("A custom field with this name already exists!");
-          return;
+            alert("A custom field with this name already exists!");
+            return;
         }
-    
+
         const newCustomFields = { ...data.customFields, [newFieldKey]: "" };
         setData((prevData) => ({ ...prevData, customFields: newCustomFields }));
-      };
+    };
 
     if (loading) return <div className="text-center py-5 text-secondary">Loading...</div>;
     if (error) return <div className="text-center py-5 text-danger">Error: {error}</div>;
@@ -239,24 +261,24 @@ function ContactDBMSDeatails() {
                 </div>
             </div>
             <div className="card shadow-sm border-0 rounded-4">
-        <div className="card-header bg-secondary text-white text-center rounded-top-4">
-          <h3 className="mb-0">Custom Fields</h3>
-        </div>
-        <div className="card-body">
-          {data.customFields &&
-            Object.entries(data.customFields).map(([field, value]) => (
-              <div className="col-lg-6 col-md-12" key={field}>
-                {renderField(field, `customFields.${field}`, value)}
-              </div>
-            ))}
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={handleAddCustomField}
-          >
-            Add Custom Field
-          </button>
-        </div>
-      </div>
+                <div className="card-header bg-secondary text-white text-center rounded-top-4">
+                    <h3 className="mb-0">Custom Fields</h3>
+                </div>
+                <div className="card-body">
+                    {data.customFields &&
+                        Object.entries(data.customFields).map(([field, value]) => (
+                            <div className="col-lg-6 col-md-12" key={field}>
+                                {renderField(field, `customFields.${field}`, value)}
+                            </div>
+                        ))}
+                    <button
+                        className="btn btn-primary btn-sm"
+                        onClick={handleAddCustomField}
+                    >
+                        Add Custom Field
+                    </button>
+                </div>
+            </div>
 
             <div className="card shadow-sm border-0 rounded-4">
                 <div className="card-header bg-secondary text-white text-center rounded-top-4">
@@ -269,22 +291,19 @@ function ContactDBMSDeatails() {
                                 <tr>
                                     <th>Product Name</th>
                                     <th>Product Code</th>
-                                    <th>Product Active</th>
-                                    <th>Manufacturer</th>
+                                    <th>Product Price</th>
+                                    {/* <th>Manufacturer</th>
                                     <th>Support Start Date</th>
-                                    <th>Support End Date</th>
+                                    <th>Support End Date</th> */}
                                 </tr>
                             </thead>
                             <tbody>
                                 {data.products && data.products.length > 0 ? (
                                     data.products.map((product, index) => (
                                         <tr key={index} className="align-middle">
-                                            <td>{product.name}</td>
-                                            <td>{product.code}</td>
-                                            <td className={product.active ? "text-success fw-bold" : "text-danger fw-bold"}>{product.active ? "Yes" : "No"}</td>
-                                            <td>{product.manufacturer}</td>
-                                            <td>{product.supportStartDate}</td>
-                                            <td>{product.supportEndDate}</td>
+                                            <td>{product.product_name}</td>
+                                            <td>{product.product_code}</td>
+                                            <td>{product.product_price}</td>
                                         </tr>
                                     ))
                                 ) : (
@@ -297,6 +316,12 @@ function ContactDBMSDeatails() {
                             </tbody>
                         </table>
                     </div>
+                    <button
+                        className="btn btn-primary btn-sm"
+                        onClick={handleAddProduct}
+                    >
+                        Add Custom Field
+                    </button>
                 </div>
             </div>
         </div>

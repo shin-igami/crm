@@ -24,6 +24,7 @@ app.use(express.json())
 app.use('/api/auth', authRoute);
 app.use('/api/leads', leadRoute);
 app.use('/api/contacts',contactRoute);
+app.use('/api/products', productRoute);
 
 
 

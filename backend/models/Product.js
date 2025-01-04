@@ -9,13 +9,13 @@ const productSchema = new mongoose.Schema(
         },
         product_code: {
             type: String,
-            required: true,
+       
             unique: true,
             trim: true,
         },
         product_price: {
             type: Number,
-            required: true,
+          
             min: 0,
         },
     },
