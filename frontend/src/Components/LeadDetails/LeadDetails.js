@@ -8,6 +8,7 @@ function LeadDetails() {
   const [error, setError] = useState(null);
   const [editField, setEditField] = useState(null);
   const [editValue, setEditValue] = useState("");
+  const [relatedContact, setRelatedContact] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -28,6 +29,22 @@ function LeadDetails() {
     }
   };
 
+  const handleRelatedContactClick = (id) => {
+    navigate(`/contact/details/${relatedContact._id}`);
+  };
+
+  const fetchRelatedContacts = async (phone) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/contacts/by-phone/${phone}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      setRelatedContact(result);
+    } catch (err) {
+      // setError(err.message);
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,6 +54,7 @@ function LeadDetails() {
         }
         const result = await response.json();
         setData(result);
+
       } catch (err) {
         setError(err.message);
       } finally {
@@ -44,8 +62,13 @@ function LeadDetails() {
       }
     };
     fetchData();
-  }, [id]);
 
+  }, [id]);
+  useEffect(() => {
+    if (data?.phone) {
+      fetchRelatedContacts(data.phone);
+    }
+  }, [data]);
   const handleEditClick = (field, value) => {
     setEditField(field);
     setEditValue(value);
@@ -107,7 +130,7 @@ function LeadDetails() {
 
   const handleAddCustomField = () => {
     const newFieldKey = window.prompt("Enter the name of the new custom field:");
-    
+
     if (!newFieldKey) {
       alert("Custom field name cannot be empty!");
       return;
@@ -256,6 +279,28 @@ function LeadDetails() {
           </button>
         </div>
       </div>
+      {relatedContact && (
+        <div onClick={handleRelatedContactClick}
+          style={{
+            padding: '10px',
+            // backgroundColor: '#f0f8ff', // Static light blue background
+            borderRadius: '5px',
+            cursor: 'pointer',
+            color: '#003366', // Initial dark blue text color
+            transition: 'color 0.3s ease', // Smooth transition for text color
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.color = '#00509e'; // Brighter blue text on hover
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.color = '#003366'; // Revert to original text color
+          }}
+        >
+          Related Contact
+        </div>
+      )}
+
+
     </div>
   );
 }

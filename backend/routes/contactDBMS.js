@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Contact = require('../models/ContactDBMS'); // Adjust path to the Contact model
-
+const Product = require('../models/Product'); // Adjust path to the Product model
 // Create a new contact
 router.post('/', async (req, res) => {
     try {
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 // Get a specific contact by ID
 router.get('/:id', async (req, res) => {
     try {
-        const contact = await Contact.findById(req.params.id);
+        const contact = await Contact.findById(req.params.id).populate('Products.product'); ;
         if (!contact) {
             return res.status(404).json({ error: 'Contact not found' });
         }
@@ -68,25 +68,26 @@ router.get('/by-phone/:phone', async (req, res) => {
     try {
         const { phone } = req.params;
 
-        // Find contact(s) with the specified phone number
-        const contacts = await Contact.find({ 
+        // Find the first contact with the specified phone number
+        const contact = await Contact.findOne({
             $or: [
-                { phone: phone }, 
+                { phone: phone },
                 { secondaryPhone: phone }
             ]
         });
 
-        if (!contacts.length) {
-            return res.status(404).json({ error: 'No contacts found with the given phone number' });
+        if (!contact) {
+            return res.status(404).json({ error: 'No contact found with the given phone number' });
         }
 
-        res.status(200).json(contacts);
+        res.status(200).json(contact);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch contacts', details: error.message });
+        res.status(500).json({ error: 'Failed to fetch contact', details: error.message });
     }
 });
 
-router.put('/:contactId/add-product', async (req, res) => {
+
+router.post('/:contactId/add-product', async (req, res) => {
     try {
         const { contactId } = req.params;
         const { productId } = req.body;  // Expecting a productId in the request body
@@ -102,7 +103,8 @@ router.put('/:contactId/add-product', async (req, res) => {
         if (!product) {
             return res.status(404).json({ error: 'Product not found' });
         }
-
+        //console.log("This is the product: ", product);
+        
         // Get the current date
         const currentDate = new Date();
 
