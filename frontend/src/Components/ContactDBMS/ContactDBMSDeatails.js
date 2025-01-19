@@ -3,10 +3,12 @@ import { useParams } from "react-router-dom";
 
 function ContactDBMSDeatails() {
     const [data, setData] = useState(null);
+    const [productData, setProductData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [editField, setEditField] = useState(null);
     const [editValue, setEditValue] = useState("");
+    const [selectedProduct, setSelectedProduct] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
@@ -24,7 +26,23 @@ function ContactDBMSDeatails() {
                 setLoading(false);
             }
         };
+        const fetchProductData = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/products/`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                setProductData(result);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchData();
+        fetchProductData();
     }, [id]);
 
     const handleEditClick = (field, value) => {
@@ -32,26 +50,33 @@ function ContactDBMSDeatails() {
         setEditValue(value);
     };
 
-    const handleAddProduct = async (product) => {
-        try {
-            const response = await fetch(`http://localhost:5000/api/contacts/${id}/add-product`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(product),
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const newLead = await response.json();
-
-            setData((prevData) => [...prevData, newLead]);
-        } catch (error) {
-            alert("Failed to add product: " + error.message);
+    const handleAddProduct = async () => {
+        if (!selectedProduct) {
+            alert("Please select a product from the dropdown.");
+            return;
         }
+   
+        alert(selectedProduct.product_name)
+
+        // try {
+        //     const response = await fetch(`http://localhost:5000/api/contacts/${id}/add-product`, {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify(selectedProduct),
+        //     });
+
+        //     if (!response.ok) {
+        //         throw new Error(`HTTP error! status: ${response.status}`);
+        //     }
+
+        //     const newLead = await response.json();
+
+        //     setData((prevData) => ({ ...prevData, products: [...prevData.products, newLead] }));
+        // } catch (error) {
+        //     alert("Failed to add product: " + error.message);
+        // }
     };
 
     const handleUpdate = async () => {
@@ -107,6 +132,7 @@ function ContactDBMSDeatails() {
             }
         }
     };
+
     const handleAddCustomField = () => {
         const newFieldKey = window.prompt("Enter the name of the new custom field:");
 
@@ -260,6 +286,7 @@ function ContactDBMSDeatails() {
                     </div>
                 </div>
             </div>
+
             <div className="card shadow-sm border-0 rounded-4">
                 <div className="card-header bg-secondary text-white text-center rounded-top-4">
                     <h3 className="mb-0">Custom Fields</h3>
@@ -298,8 +325,8 @@ function ContactDBMSDeatails() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.products && data.products.length > 0 ? (
-                                    data.products.map((product, index) => (
+                                {productData && productData.length > 0 ? (
+                                    productData.map((product, index) => (
                                         <tr key={index} className="align-middle">
                                             <td>{product.product_name}</td>
                                             <td>{product.product_code}</td>
@@ -316,12 +343,41 @@ function ContactDBMSDeatails() {
                             </tbody>
                         </table>
                     </div>
-                    <button
-                        className="btn btn-primary btn-sm"
-                        onClick={handleAddProduct}
-                    >
-                        Add Custom Field
+              
+                </div>
+                <div className="card-body">
+                    <div className="mb-3">
+                        <label htmlFor="productDropdown" className="form-label">Select a Product:</label>
+                        <select
+                            id="productDropdown"
+                            className="form-select"
+                            value={selectedProduct ? selectedProduct.product_name : ""}
+                            onChange={(e) => {
+                                const product = productData.find(
+                                    (prod) => prod.product_name === e.target.value
+                                );
+                                setSelectedProduct(product);
+                            }}
+                        >
+                            <option value="">-- Select a Product --</option>
+                            {productData && productData.map((product) => (
+                                <option key={product.id} value={product.product_name}>
+                                    {product.product_name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <button className="btn btn-success btn-sm" onClick={handleAddProduct}>
+                        Add Product
                     </button>
+
+                    <ul className="list-group mt-3">
+                        {data.products && data.products.map((product) => (
+                            <li key={product.id} className="list-group-item">
+                                {product.product_name}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </div>
