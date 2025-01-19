@@ -325,12 +325,12 @@ function ContactDBMSDeatails() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {productData && productData.length > 0 ? (
-                                    productData.map((product, index) => (
+                                {data.Products && data.Products.length > 0 ? (
+                                    data.Products.map((product, index) => (
                                         <tr key={index} className="align-middle">
-                                            <td>{product.product_name}</td>
-                                            <td>{product.product_code}</td>
-                                            <td>{product.product_price}</td>
+                                            <td>{product.product.product_name}</td>
+                                            <td>{product.product.product_code}</td>
+                                            <td>{product.product.product_price}</td>
                                         </tr>
                                     ))
                                 ) : (
