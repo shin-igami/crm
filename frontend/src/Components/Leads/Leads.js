@@ -11,7 +11,7 @@ function Leads() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/leads");
+        const response = await fetch("https://crmmaanof.onrender.com/api/leads");
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

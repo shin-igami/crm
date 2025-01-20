@@ -14,7 +14,7 @@ function LeadDetails() {
 
   const handleConvert = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/leads/convert/${id}`, {
+      const response = await fetch(`https://crmmaanof.onrender.com/api/leads/convert/${id}`, {
         method: "POST",
       });
 
@@ -35,7 +35,7 @@ function LeadDetails() {
 
   const fetchRelatedContacts = async (phone) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/contacts/by-phone/${phone}`);
+      const response = await fetch(`https://crmmaanof.onrender.com/api/contacts/by-phone/${phone}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -48,7 +48,7 @@ function LeadDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/leads/${id}`);
+        const response = await fetch(`https://crmmaanof.onrender.com/api/leads/${id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -80,7 +80,7 @@ function LeadDetails() {
       : { [editField]: editValue };
 
     try {
-      const response = await fetch(`http://localhost:5000/api/leads/${id}`, {
+      const response = await fetch(`https://crmmaanof.onrender.com/api/leads/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,7 @@ function LeadDetails() {
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this record?")) {
       try {
-        const response = await fetch(`http://localhost:5000/api/leads/${id}`, {
+        const response = await fetch(`https://crmmaanof.onrender.com/api/leads/${id}`, {
           method: "DELETE",
         });
 

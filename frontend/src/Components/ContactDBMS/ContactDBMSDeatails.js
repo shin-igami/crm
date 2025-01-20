@@ -10,25 +10,31 @@ function ContactDBMSDeatails() {
     const [editValue, setEditValue] = useState("");
     const [selectedProduct, setSelectedProduct] = useState(null);
     const { id } = useParams();
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`https://crmmaanof.onrender.com/api/contacts/${id}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const result = await response.json();
+            setData(result);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+       
+        fetchData();
+    }, [id]);
+
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`http://localhost:5000/api/contacts/${id}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const result = await response.json();
-                setData(result);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+        
         const fetchProductData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/products/`);
+                const response = await fetch(`https://crmmaanof.onrender.com/api/products/`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -41,9 +47,8 @@ function ContactDBMSDeatails() {
             }
         };
 
-        fetchData();
         fetchProductData();
-    }, [id]);
+    }, []);
 
     const handleEditClick = (field, value) => {
         setEditField(field);
@@ -55,28 +60,31 @@ function ContactDBMSDeatails() {
             alert("Please select a product from the dropdown.");
             return;
         }
+        console.log(selectedProduct)
+        const proid =
+        {
+            productId : selectedProduct._id,
+        }
    
-        alert(selectedProduct.product_name)
+        // alert(selectedProduct.product_name)
 
-        // try {
-        //     const response = await fetch(`http://localhost:5000/api/contacts/${id}/add-product`, {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(selectedProduct),
-        //     });
+        try {
+            const response = await fetch(`https://crmmaanof.onrender.com/api/contacts/${id}/add-product`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(proid),
+            });
 
-        //     if (!response.ok) {
-        //         throw new Error(`HTTP error! status: ${response.status}`);
-        //     }
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            fetchData()
 
-        //     const newLead = await response.json();
-
-        //     setData((prevData) => ({ ...prevData, products: [...prevData.products, newLead] }));
-        // } catch (error) {
-        //     alert("Failed to add product: " + error.message);
-        // }
+        } catch (error) {
+            alert("Failed to add product: " + error.message);
+        }
     };
 
     const handleUpdate = async () => {
@@ -85,7 +93,7 @@ function ContactDBMSDeatails() {
             : { [editField]: editValue };
 
         try {
-            const response = await fetch(`http://localhost:5000/api/contacts/${id}`, {
+            const response = await fetch(`https://crmmaanof.onrender.com/api/contacts/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -118,7 +126,7 @@ function ContactDBMSDeatails() {
     const handleDelete = async () => {
         if (window.confirm("Are you sure you want to delete this record?")) {
             try {
-                const response = await fetch(`http://localhost:5000/api/contacts/${id}`, {
+                const response = await fetch(`https://crmmaanof.onrender.com/api/contacts/${id}`, {
                     method: "DELETE",
                 });
 
@@ -211,18 +219,18 @@ function ContactDBMSDeatails() {
                 <div className="card-body">
                     <div className="row mb-2">
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Lead Owner", "leadOwner", data.leadOwner)}
+                            {renderField("Lead Owner", "leadOwner", data?.leadOwner)}
                         </div>
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Email", "emailAddress", data.emailAddress)}
+                            {renderField("Email", "emailAddress", data?.emailAddress)}
                         </div>
                     </div>
                     <div className="row mb-2">
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Phone", "phone", data.phone)}
+                            {renderField("Phone", "phone", data?.phone)}
                         </div>
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Lead Status", "leadStatus", data.leadStatus)}
+                            {renderField("Lead Status", "leadStatus", data?.leadStatus)}
                         </div>
                     </div>
                 </div>
@@ -235,53 +243,53 @@ function ContactDBMSDeatails() {
                 <div className="card-body">
                     <div className="row mb-2">
                         <div className="col-lg-6 col-md-12">
-                            {renderField("First Name", "firstName", data.firstName)}
+                            {renderField("First Name", "firstName", data?.firstName)}
                         </div>
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Last Name", "lastName", data.lastName)}
-                        </div>
-                    </div>
-                    <div className="row mb-2">
-                        <div className="col-lg-6 col-md-12">
-                            {renderField("Company", "company", data.company)}
-                        </div>
-                        <div className="col-lg-6 col-md-12">
-                            {renderField("Lead Source", "leadSource", data.leadSource)}
+                            {renderField("Last Name", "lastName", data?.lastName)}
                         </div>
                     </div>
                     <div className="row mb-2">
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Secondary Phone", "secondaryPhone", data.secondaryPhone)}
+                            {renderField("Company", "company", data?.company)}
                         </div>
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Secondary Email", "secondaryEmailAddress", data.secondaryEmailAddress)}
+                            {renderField("Lead Source", "leadSource", data?.leadSource)}
                         </div>
                     </div>
                     <div className="row mb-2">
                         <div className="col-lg-6 col-md-12">
-                            {renderField("PAN", "PAN", data.PAN)}
+                            {renderField("Secondary Phone", "secondaryPhone", data?.secondaryPhone)}
                         </div>
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Aadhaar Number", "AadhaarNumber", data.AadhaarNumber)}
+                            {renderField("Secondary Email", "secondaryEmailAddress", data?.secondaryEmailAddress)}
+                        </div>
+                    </div>
+                    <div className="row mb-2">
+                        <div className="col-lg-6 col-md-12">
+                            {renderField("PAN", "PAN", data?.PAN)}
+                        </div>
+                        <div className="col-lg-6 col-md-12">
+                            {renderField("Aadhaar Number", "AadhaarNumber", data?.AadhaarNumber)}
                         </div>
                     </div>
                     <div className="row mb-2">
                         <div className="col-lg-4 col-md-6">
-                            {renderField("Street", "street", data.street)}
+                            {renderField("Street", "street", data?.street)}
                         </div>
                         <div className="col-lg-4 col-md-6">
-                            {renderField("City", "city", data.city)}
+                            {renderField("City", "city", data?.city)}
                         </div>
                         <div className="col-lg-4 col-md-6">
-                            {renderField("State", "state", data.state)}
+                            {renderField("State", "state", data?.state)}
                         </div>
                     </div>
                     <div className="row mb-2">
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Zip Code", "zipCode", data.zipCode)}
+                            {renderField("Zip Code", "zipCode", data?.zipCode)}
                         </div>
                         <div className="col-lg-6 col-md-12">
-                            {renderField("Country", "country", data.country)}
+                            {renderField("Country", "country", data?.country)}
                         </div>
                     </div>
                 </div>
@@ -292,7 +300,7 @@ function ContactDBMSDeatails() {
                     <h3 className="mb-0">Custom Fields</h3>
                 </div>
                 <div className="card-body">
-                    {data.customFields &&
+                    {data && data?.customFields &&
                         Object.entries(data.customFields).map(([field, value]) => (
                             <div className="col-lg-6 col-md-12" key={field}>
                                 {renderField(field, `customFields.${field}`, value)}
@@ -325,8 +333,8 @@ function ContactDBMSDeatails() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.Products && data.Products.length > 0 ? (
-                                    data.Products.map((product, index) => (
+                                {data && data.Products && data.Products.length > 0 ? (
+                                     data.Products.map((product, index) => (
                                         <tr key={index} className="align-middle">
                                             <td>{product.product.product_name}</td>
                                             <td>{product.product.product_code}</td>
@@ -371,13 +379,7 @@ function ContactDBMSDeatails() {
                         Add Product
                     </button>
 
-                    <ul className="list-group mt-3">
-                        {data.products && data.products.map((product) => (
-                            <li key={product.id} className="list-group-item">
-                                {product.product_name}
-                            </li>
-                        ))}
-                    </ul>
+            
                 </div>
             </div>
         </div>

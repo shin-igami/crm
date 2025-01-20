@@ -21,6 +21,7 @@ function App() {
        
         {/* Define Routes for different components */}
         <Routes>
+          <Route path="/" element={<Leads />} />
           <Route path="/leads" element={<Leads />} />
           <Route path="/leads/add" element={<LeadForms />} />
           <Route path="/leads/details/:id" element={<LeadDetails />} />
